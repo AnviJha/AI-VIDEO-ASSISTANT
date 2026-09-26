@@ -1,16 +1,24 @@
-# this file contain main with style 
+```python
+# this file contain main with style
 
 import streamlit as st
 import time
+import tempfile
 from html import escape
+
 from dotenv import load_dotenv
 from utils.audio_processor import process_input
 from core.transcriber import transcribe_all
 from core.summarizer import summarize, generate_title
-from core.extractor import extract_action_items, extract_key_decisions, extract_questions
+from core.extractor import (
+    extract_action_items,
+    extract_key_decisions,
+    extract_questions,
+)
 from core.rag_engine import build_rag_chain, ask_question
 
 load_dotenv()
+
 
 # ─── Page Config ────────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -19,6 +27,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
 
 # ─── Custom CSS ─────────────────────────────────────────────────────────────────
 st.markdown("""
@@ -89,7 +98,12 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 800;
     line-height: 1.1;
     margin: 0;
-    background: linear-gradient(135deg, #ffffff 0%, var(--accent-glow) 50%, var(--accent-2) 100%);
+    background: linear-gradient(
+        135deg,
+        #ffffff 0%,
+        var(--accent-glow) 50%,
+        var(--accent-2) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -158,9 +172,23 @@ h1, h2, h3, h4, h5, h6 {
     text-transform: uppercase;
 }
 
-.badge-purple { background: rgba(124,58,237,0.2); color: var(--accent-glow); border: 1px solid rgba(124,58,237,0.3); }
-.badge-cyan   { background: rgba(6,182,212,0.15); color: var(--accent-2);    border: 1px solid rgba(6,182,212,0.3); }
-.badge-green  { background: rgba(16,185,129,0.15); color: var(--success);    border: 1px solid rgba(16,185,129,0.3); }
+.badge-purple {
+    background: rgba(124,58,237,0.2);
+    color: var(--accent-glow);
+    border: 1px solid rgba(124,58,237,0.3);
+}
+
+.badge-cyan {
+    background: rgba(6,182,212,0.15);
+    color: var(--accent-2);
+    border: 1px solid rgba(6,182,212,0.3);
+}
+
+.badge-green {
+    background: rgba(16,185,129,0.15);
+    color: var(--success);
+    border: 1px solid rgba(16,185,129,0.3);
+}
 
 /* ── Input & Buttons ── */
 .stTextInput > div > div > input,
@@ -216,18 +244,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .status-dot {
-    width: 8px; height: 8px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     flex-shrink: 0;
 }
 
-.dot-active   { background: var(--accent-glow); box-shadow: 0 0 8px var(--accent-glow); animation: pulse 1.5s infinite; }
-.dot-done     { background: var(--success); }
-.dot-pending  { background: var(--border); }
+.dot-active {
+    background: var(--accent-glow);
+    box-shadow: 0 0 8px var(--accent-glow);
+    animation: pulse 1.5s infinite;
+}
+
+.dot-done {
+    background: var(--success);
+}
+
+.dot-pending {
+    background: var(--border);
+}
 
 @keyframes pulse {
     0%, 100% { opacity: 1; }
-    50%       { opacity: 0.4; }
+    50% { opacity: 0.4; }
 }
 
 /* ── Chat ── */
@@ -264,11 +303,25 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 90%;
 }
 
-.user-label  { color: var(--accent-glow); }
-.bot-label   { color: var(--accent-2); }
+.user-label {
+    color: var(--accent-glow);
+}
 
-.user-bubble { background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.25); align-self: flex-end; }
-.bot-bubble  { background: rgba(6,182,212,0.1);  border: 1px solid rgba(6,182,212,0.2);   align-self: flex-start; }
+.bot-label {
+    color: var(--accent-2);
+}
+
+.user-bubble {
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.25);
+    align-self: flex-end;
+}
+
+.bot-bubble {
+    background: rgba(6,182,212,0.1);
+    border: 1px solid rgba(6,182,212,0.2);
+    align-self: flex-start;
+}
 
 /* ── Divider ── */
 hr {
@@ -293,18 +346,44 @@ hr {
 }
 
 /* ── Stale Streamlit elements ── */
-.stProgress > div > div > div { background: var(--accent) !important; }
-.stSpinner > div { border-top-color: var(--accent) !important; }
-[data-testid="stMarkdownContainer"] p { color: var(--text) !important; }
-label { color: var(--text-muted) !important; font-size: 0.8rem !important; }
+.stProgress > div > div > div {
+    background: var(--accent) !important;
+}
+
+.stSpinner > div {
+    border-top-color: var(--accent) !important;
+}
+
+[data-testid="stMarkdownContainer"] p {
+    color: var(--text) !important;
+}
+
+label {
+    color: var(--text-muted) !important;
+    font-size: 0.8rem !important;
+}
 
 /* scrollbar */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
 </style>
 """, unsafe_allow_html=True)
+
 
 # ─── Session State Init ──────────────────────────────────────────────────────────
 for key, default in {
@@ -317,57 +396,124 @@ for key, default in {
     if key not in st.session_state:
         st.session_state[key] = default
 
+
 # ─── Helpers ────────────────────────────────────────────────────────────────────
 def step_status(steps: dict, key: str) -> str:
     s = steps.get(key, "pending")
-    if s == "active":  return "dot-active"
-    if s == "done":    return "dot-done"
+
+    if s == "active":
+        return "dot-active"
+
+    if s == "done":
+        return "dot-done"
+
     return "dot-pending"
+
 
 def render_step_bar(label: str, key: str, icon: str):
     css = step_status(st.session_state.pipeline_steps, key)
-    st.markdown(f"""
-    <div class="status-bar">
-        <div class="status-dot {css}"></div>
-        <span>{icon} {label}</span>
-    </div>""", unsafe_allow_html=True)
+
+    st.markdown(
+        f"""
+        <div class="status-bar">
+            <div class="status-dot {css}"></div>
+            <span>{icon} {label}</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 
 # ─── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown('<div class="hero-title" style="font-size:1.6rem">🎬 AI<br>Video</div>', unsafe_allow_html=True)
-    st.markdown('<div class="hero-sub">Meeting Intelligence</div>', unsafe_allow_html=True)
+
+    st.markdown(
+        '<div class="hero-title" style="font-size:1.6rem">🎬 AI<br>Video</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        '<div class="hero-sub">Meeting Intelligence</div>',
+        unsafe_allow_html=True,
+    )
+
     st.markdown("---")
 
-    st.markdown('<span class="badge badge-purple">Input</span>', unsafe_allow_html=True)
-    source = st.text_input("YouTube URL or File Path", placeholder="https://youtube.com/watch?v=... or /path/to/file.mp4")
+    st.markdown(
+        '<span class="badge badge-purple">Input</span>',
+        unsafe_allow_html=True,
+    )
 
-    language = st.selectbox("Language", ["english", "hinglish"], index=0)
+    # File upload instead of YouTube URL
+    uploaded_file = st.file_uploader(
+        "Upload audio or video",
+        type=[
+            "mp3",
+            "wav",
+            "mp4",
+            "m4a",
+            "webm",
+            "mov",
+            "flac",
+            "ogg",
+        ],
+        help="Upload your meeting recording or video file.",
+    )
 
-    run_btn = st.button("⚡  Analyse", use_container_width=True)
+    language = st.selectbox(
+        "Language",
+        ["english", "hinglish"],
+        index=0,
+    )
+
+    run_btn = st.button(
+        "⚡  Analyse",
+        use_container_width=True,
+    )
 
     if st.session_state.pipeline_done:
+
         st.markdown("---")
-        st.markdown('<span class="badge badge-green">Pipeline Status</span>', unsafe_allow_html=True)
+
+        st.markdown(
+            '<span class="badge badge-green">Pipeline Status</span>',
+            unsafe_allow_html=True,
+        )
+
         for step, icon, label in [
-            ("audio",      "🔊", "Audio Processing"),
+            ("audio", "🔊", "Audio Processing"),
             ("transcript", "📝", "Transcription"),
-            ("title",      "🏷️", "Title Generation"),
-            ("summary",    "📋", "Summarisation"),
-            ("extract",    "🔍", "Extraction"),
-            ("rag",        "🧠", "RAG Engine"),
+            ("title", "🏷️", "Title Generation"),
+            ("summary", "📋", "Summarisation"),
+            ("extract", "🔍", "Extraction"),
+            ("rag", "🧠", "RAG Engine"),
         ]:
             render_step_bar(label, step, icon)
 
+
 # ─── Main Area ──────────────────────────────────────────────────────────────────
-st.markdown('<div class="hero-title">AI Video Assistant</div>', unsafe_allow_html=True)
-st.markdown('<div class="hero-sub">Transcribe · Summarise · Chat with your meetings</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="hero-title">AI Video Assistant</div>',
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    '<div class="hero-sub">Transcribe · Summarise · Chat with your meetings</div>',
+    unsafe_allow_html=True,
+)
+
 st.markdown("---")
+
 
 # ── Run Pipeline ────────────────────────────────────────────────────────────────
 if run_btn:
-    if not source.strip():
-        st.error("Please enter a YouTube URL or file path.")
+
+    if uploaded_file is None:
+
+        st.error("Please upload an audio or video file.")
+
     else:
+
         st.session_state.pipeline_done = False
         st.session_state.result = None
         st.session_state.chat_history = []
@@ -375,39 +521,82 @@ if run_btn:
 
         progress_placeholder = st.empty()
 
+        # Save uploaded file temporarily
+        try:
+
+            suffix = "." + uploaded_file.name.split(".")[-1]
+
+            with tempfile.NamedTemporaryFile(
+                delete=False,
+                suffix=suffix,
+            ) as temp_file:
+
+                temp_file.write(uploaded_file.getbuffer())
+                source = temp_file.name
+
+        except Exception as e:
+
+            st.error(f"❌ Could not save uploaded file: {e}")
+            st.stop()
+
         def update_step(key, state):
             st.session_state.pipeline_steps[key] = state
 
         try:
-            with progress_placeholder.container():
-                st.info("⚙️ Pipeline running — see sidebar for live status…")
 
+            with progress_placeholder.container():
+                st.info(
+                    "⚙️ Pipeline running — see sidebar for live status…"
+                )
+
+            # ── Audio Processing ──
             update_step("audio", "active")
+
             chunks = process_input(source)
+
             update_step("audio", "done")
 
+            # ── Transcription ──
             update_step("transcript", "active")
-            transcript = transcribe_all(chunks, language)
+
+            transcript = transcribe_all(
+                chunks,
+                language,
+            )
+
             update_step("transcript", "done")
 
+            # ── Title ──
             update_step("title", "active")
+
             title = generate_title(transcript)
+
             update_step("title", "done")
 
+            # ── Summary ──
             update_step("summary", "active")
+
             summary = summarize(transcript)
+
             update_step("summary", "done")
 
+            # ── Extraction ──
             update_step("extract", "active")
-            action_items  = extract_action_items(transcript)
-            decisions     = extract_key_decisions(transcript)
-            questions     = extract_questions(transcript)
+
+            action_items = extract_action_items(transcript)
+            decisions = extract_key_decisions(transcript)
+            questions = extract_questions(transcript)
+
             update_step("extract", "done")
 
+            # ── RAG ──
             update_step("rag", "active")
+
             rag_chain = build_rag_chain(transcript)
+
             update_step("rag", "done")
 
+            # ── Store Result ──
             st.session_state.result = {
                 "title": title,
                 "transcript": transcript,
@@ -417,141 +606,418 @@ if run_btn:
                 "open_questions": questions,
                 "rag_chain": rag_chain,
             }
+
             st.session_state.pipeline_done = True
-            progress_placeholder.success("✅ Analysis complete!")
+
+            progress_placeholder.success(
+                "✅ Analysis complete!"
+            )
+
             time.sleep(0.5)
+
             progress_placeholder.empty()
+
             st.rerun()
 
         except Exception as e:
-            for k in ["audio","transcript","title","summary","extract","rag"]:
-                if st.session_state.pipeline_steps.get(k) == "active":
+
+            for k in [
+                "audio",
+                "transcript",
+                "title",
+                "summary",
+                "extract",
+                "rag",
+            ]:
+
+                if (
+                    st.session_state.pipeline_steps.get(k)
+                    == "active"
+                ):
                     st.session_state.pipeline_steps[k] = "pending"
-            status_code = getattr(getattr(e, "response", None), "status_code", None)
+
+            status_code = getattr(
+                getattr(e, "response", None),
+                "status_code",
+                None,
+            )
+
             if status_code == 429:
+
                 progress_placeholder.error(
-                    "Mistral is rate-limiting requests (HTTP 429). Wait for the limit to reset, "
-                    "check your Mistral account's usage and rate limits, then run the analysis again."
+                    "Mistral is rate-limiting requests (HTTP 429). "
+                    "Wait for the limit to reset, check your Mistral "
+                    "account's usage and rate limits, then run the "
+                    "analysis again."
                 )
+
             else:
-                progress_placeholder.error(f"❌ Error: {e}")
+
+                progress_placeholder.error(
+                    f"❌ Error: {e}"
+                )
+
 
 # ── Results ──────────────────────────────────────────────────────────────────────
 if st.session_state.result:
+
     r = st.session_state.result
 
-    # Title banner
-    st.markdown(f"""
-    <div class="card">
-        <div class="card-title">📌 Session Title</div>
-        <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--text)">
-            {escape(str(r['title']))}
+    # ── Title Banner ──
+    st.markdown(
+        f"""
+        <div class="card">
+            <div class="card-title">📌 Session Title</div>
+            <div style="
+                font-family:'Syne',sans-serif;
+                font-size:1.4rem;
+                font-weight:700;
+                color:var(--text)
+            ">
+                {escape(str(r['title']))}
+            </div>
         </div>
-    </div>""", unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True,
+    )
 
-    # Top row: summary + transcript
-    col1, col2 = st.columns([3, 2], gap="medium")
+    # ── Top Row ──
+    col1, col2 = st.columns(
+        [3, 2],
+        gap="medium",
+    )
 
     with col1:
-        st.markdown(f"""
-        <div class="card">
-            <div class="card-title">📋 Summary</div>
-            <div class="card-content">{escape(str(r['summary'])).replace(chr(10), '<br>')}</div>
-        </div>""", unsafe_allow_html=True)
+
+        st.markdown(
+            f"""
+            <div class="card">
+                <div class="card-title">📋 Summary</div>
+                <div class="card-content">
+                    {escape(str(r['summary'])).replace(chr(10), '<br>')}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
     with col2:
-        with st.expander("📝 Full Transcript", expanded=False):
-            transcript_html = escape(str(r["transcript"])).replace("\n", "<br>")
-            st.markdown(f'<div class="transcript-box">{transcript_html}</div>', unsafe_allow_html=True)
 
-    # Second row: action items | decisions | questions
-    c1, c2, c3 = st.columns(3, gap="medium")
+        with st.expander(
+            "📝 Full Transcript",
+            expanded=False,
+        ):
+
+            transcript_html = (
+                escape(str(r["transcript"]))
+                .replace("\n", "<br>")
+            )
+
+            st.markdown(
+                f"""
+                <div class="transcript-box">
+                    {transcript_html}
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    # ── Second Row ──
+    c1, c2, c3 = st.columns(
+        3,
+        gap="medium",
+    )
 
     with c1:
-        st.markdown(f"""
-        <div class="card">
-            <div class="card-title">✅ Action Items</div>
-            <div class="card-content">{escape(str(r['action_items'])).replace(chr(10), '<br>')}</div>
-        </div>""", unsafe_allow_html=True)
+
+        st.markdown(
+            f"""
+            <div class="card">
+                <div class="card-title">✅ Action Items</div>
+                <div class="card-content">
+                    {escape(str(r['action_items'])).replace(chr(10), '<br>')}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
     with c2:
-        st.markdown(f"""
-        <div class="card">
-            <div class="card-title">🔑 Key Decisions</div>
-            <div class="card-content">{escape(str(r['key_decisions'])).replace(chr(10), '<br>')}</div>
-        </div>""", unsafe_allow_html=True)
+
+        st.markdown(
+            f"""
+            <div class="card">
+                <div class="card-title">🔑 Key Decisions</div>
+                <div class="card-content">
+                    {escape(str(r['key_decisions'])).replace(chr(10), '<br>')}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
     with c3:
-        st.markdown(f"""
-        <div class="card">
-            <div class="card-title">❓ Open Questions</div>
-            <div class="card-content">{escape(str(r['open_questions'])).replace(chr(10), '<br>')}</div>
-        </div>""", unsafe_allow_html=True)
+
+        st.markdown(
+            f"""
+            <div class="card">
+                <div class="card-title">❓ Open Questions</div>
+                <div class="card-content">
+                    {escape(str(r['open_questions'])).replace(chr(10), '<br>')}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
     st.markdown("---")
 
     # ── RAG Chat ──────────────────────────────────────────────────────────────
-    st.markdown('<div style="font-family:\'Syne\',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:1rem">💬 Chat with your Meeting</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div style="
+            font-family:'Syne',sans-serif;
+            font-size:1.2rem;
+            font-weight:700;
+            margin-bottom:1rem
+        ">
+            💬 Chat with your Meeting
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    # Chat history display
+    # ── Chat History ──
     if st.session_state.chat_history:
+
         chat_html = '<div class="chat-container">'
+
         for msg in st.session_state.chat_history:
-            message_content = escape(str(msg['content'])).replace("\n", "<br>")
+
+            message_content = (
+                escape(str(msg["content"]))
+                .replace("\n", "<br>")
+            )
+
             if msg["role"] == "user":
+
                 chat_html += f"""
                 <div class="chat-msg" style="align-items:flex-end">
                     <span class="chat-label user-label">You</span>
-                    <div class="chat-bubble user-bubble">{message_content}</div>
-                </div>"""
+                    <div class="chat-bubble user-bubble">
+                        {message_content}
+                    </div>
+                </div>
+                """
+
             else:
+
                 chat_html += f"""
                 <div class="chat-msg" style="align-items:flex-start">
-                    <span class="chat-label bot-label">🤖 Assistant</span>
-                    <div class="chat-bubble bot-bubble">{message_content}</div>
-                </div>"""
-        chat_html += '</div>'
-        st.markdown(chat_html, unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div class="card" style="text-align:center;padding:2rem">
-            <div style="font-size:2rem;margin-bottom:0.5rem">💬</div>
-            <div style="color:var(--text-muted);font-size:0.85rem">Ask anything about your meeting transcript</div>
-        </div>""", unsafe_allow_html=True)
+                    <span class="chat-label bot-label">
+                        🤖 Assistant
+                    </span>
+                    <div class="chat-bubble bot-bubble">
+                        {message_content}
+                    </div>
+                </div>
+                """
 
-    # Chat input
-    chat_col1, chat_col2 = st.columns([5, 1], gap="small")
+        chat_html += "</div>"
+
+        st.markdown(
+            chat_html,
+            unsafe_allow_html=True,
+        )
+
+    else:
+
+        st.markdown(
+            """
+            <div class="card" style="
+                text-align:center;
+                padding:2rem
+            ">
+                <div style="
+                    font-size:2rem;
+                    margin-bottom:0.5rem
+                ">
+                    💬
+                </div>
+
+                <div style="
+                    color:var(--text-muted);
+                    font-size:0.85rem
+                ">
+                    Ask anything about your meeting transcript
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # ── Chat Input ──
+    chat_col1, chat_col2 = st.columns(
+        [5, 1],
+        gap="small",
+    )
+
     with chat_col1:
-        user_input = st.text_input("Your question", placeholder="What were the main decisions made?", label_visibility="collapsed")
+
+        user_input = st.text_input(
+            "Your question",
+            placeholder="What were the main decisions made?",
+            label_visibility="collapsed",
+        )
+
     with chat_col2:
-        send_btn = st.button("Send →", use_container_width=True)
+
+        send_btn = st.button(
+            "Send →",
+            use_container_width=True,
+        )
 
     if send_btn and user_input.strip():
+
         with st.spinner("Thinking…"):
-            answer = ask_question(r["rag_chain"], user_input.strip())
-        st.session_state.chat_history.append({"role": "user",      "content": user_input.strip()})
-        st.session_state.chat_history.append({"role": "assistant", "content": answer})
+
+            answer = ask_question(
+                r["rag_chain"],
+                user_input.strip(),
+            )
+
+        st.session_state.chat_history.append(
+            {
+                "role": "user",
+                "content": user_input.strip(),
+            }
+        )
+
+        st.session_state.chat_history.append(
+            {
+                "role": "assistant",
+                "content": answer,
+            }
+        )
+
         st.rerun()
 
     if st.session_state.chat_history:
-        if st.button("🗑️ Clear Chat", type="secondary"):
+
+        if st.button(
+            "🗑️ Clear Chat",
+            type="secondary",
+        ):
+
             st.session_state.chat_history = []
+
             st.rerun()
 
+
+# ── Empty State ──────────────────────────────────────────────────────────────────
 else:
-    # Empty state
-    st.markdown("""
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem;text-align:center">
-        <div style="font-size:4rem;margin-bottom:1rem">🎬</div>
-        <div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;color:var(--text);margin-bottom:0.5rem">
-            Ready to Analyse
+
+    st.markdown(
+        """
+        <div style="
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            padding:5rem 2rem;
+            text-align:center
+        ">
+
+            <div style="
+                font-size:4rem;
+                margin-bottom:1rem
+            ">
+                🎬
+            </div>
+
+            <div style="
+                font-family:'Syne',sans-serif;
+                font-size:1.5rem;
+                font-weight:700;
+                color:var(--text);
+                margin-bottom:0.5rem
+            ">
+                Ready to Analyse
+            </div>
+
+            <div style="
+                color:var(--text-muted);
+                font-size:0.85rem;
+                max-width:380px;
+                line-height:1.7
+            ">
+                Upload your meeting audio or video in the sidebar,
+                choose your language, and hit
+                <strong>Analyse</strong> to get started.
+            </div>
+
+            <div style="
+                margin-top:2rem;
+                display:flex;
+                gap:1rem;
+                flex-wrap:wrap;
+                justify-content:center
+            ">
+                <span class="badge badge-purple">
+                    Transcription
+                </span>
+
+                <span class="badge badge-cyan">
+                    Summarisation
+                </span>
+
+                <span class="badge badge-green">
+                    RAG Chat
+                </span>
+            </div>
+
         </div>
-        <div style="color:var(--text-muted);font-size:0.85rem;max-width:380px;line-height:1.7">
-            Paste a YouTube URL or local file path in the sidebar, choose your language, and hit <strong>Analyse</strong> to get started.
-        </div>
-        <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center">
-            <span class="badge badge-purple">Transcription</span>
-            <span class="badge badge-cyan">Summarisation</span>
-            <span class="badge badge-green">RAG Chat</span>
-        </div>
-    </div>""", unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True,
+    )
+```
+
+### What changed
+
+Only the input mechanism changed:
+
+**Before:**
+
+```text
+YouTube URL / local path
+        ↓
+process_input()
+        ↓
+yt-dlp OR local file
+```
+
+**Now:**
+
+```text
+Upload MP4 / MP3 / WAV / M4A / etc.
+        ↓
+Temporary file
+        ↓
+process_input()
+        ↓
+pydub + FFmpeg
+        ↓
+Whisper
+```
+
+So you **do not need to modify `audio_processor.py`** for this change.
+
+### Now do this
+
+1. Open `app.py` on GitHub.
+2. Replace its entire contents with the code above.
+3. Commit directly to `main`.
+4. Wait for Streamlit Cloud to redeploy.
+5. Upload a **small MP3 or MP4** first.
+
+Don't test YouTube yet. First let's get the **file-upload → transcription → summary → RAG** pipeline working.
