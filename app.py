@@ -915,7 +915,7 @@ if st.session_state.result:
 
 
 # ── Empty State ──────────────────────────────────────────────────────────────────
-        else:
+else:
 
     st.markdown(
         """
@@ -980,4 +980,3 @@ if st.session_state.result:
 """,
         unsafe_allow_html=True,
     )
-
