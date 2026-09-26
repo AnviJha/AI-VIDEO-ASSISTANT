@@ -915,69 +915,69 @@ if st.session_state.result:
 
 
 # ── Empty State ──────────────────────────────────────────────────────────────────
-else:
+        else:
 
     st.markdown(
         """
-        <div style="
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            justify-content:center;
-            padding:5rem 2rem;
-            text-align:center
-        ">
+<div style="
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:5rem 2rem;
+    text-align:center;
+">
 
-            <div style="
-                font-size:4rem;
-                margin-bottom:1rem
-            ">
-                🎬
-            </div>
+    <div style="
+        font-size:4rem;
+        margin-bottom:1rem
+    ">
+        🎬
+    </div>
 
-            <div style="
-                font-family:'Syne',sans-serif;
-                font-size:1.5rem;
-                font-weight:700;
-                color:var(--text);
-                margin-bottom:0.5rem
-            ">
-                Ready to Analyse
-            </div>
+    <div style="
+        font-family:'Syne',sans-serif;
+        font-size:1.5rem;
+        font-weight:700;
+        color:var(--text);
+        margin-bottom:0.5rem
+    ">
+        Ready to Analyse
+    </div>
 
-            <div style="
-                color:var(--text-muted);
-                font-size:0.85rem;
-                max-width:380px;
-                line-height:1.7
-            ">
-                Upload your meeting audio or video in the sidebar,
-                choose your language, and hit
-                <strong>Analyse</strong> to get started.
-            </div>
+    <div style="
+        color:var(--text-muted);
+        font-size:0.85rem;
+        max-width:380px;
+        line-height:1.7
+    ">
+        Upload your meeting audio or video in the sidebar,
+        choose your language, and hit
+        <strong>Analyse</strong> to get started.
+    </div>
 
-            <div style="
-                margin-top:2rem;
-                display:flex;
-                gap:1rem;
-                flex-wrap:wrap;
-                justify-content:center
-            ">
-                <span class="badge badge-purple">
-                    Transcription
-                </span>
+    <div style="
+        margin-top:2rem;
+        display:flex;
+        gap:1rem;
+        flex-wrap:wrap;
+        justify-content:center
+    ">
+        <span class="badge badge-purple">
+            Transcription
+        </span>
 
-                <span class="badge badge-cyan">
-                    Summarisation
-                </span>
+        <span class="badge badge-cyan">
+            Summarisation
+        </span>
 
-                <span class="badge badge-green">
-                    RAG Chat
-                </span>
-            </div>
+        <span class="badge badge-green">
+            RAG Chat
+        </span>
+    </div>
 
-        </div>
-        """,
+</div>
+""",
         unsafe_allow_html=True,
     )
 
