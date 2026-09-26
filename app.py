@@ -914,11 +914,9 @@ if st.session_state.result:
             st.rerun()
 
 
-# ── Empty State ──────────────────────────────────────────────────────────────────
 else:
 
-    st.markdown(
-        """
+    st.html("""
 <div style="
     display:flex;
     flex-direction:column;
@@ -930,7 +928,7 @@ else:
 
     <div style="
         font-size:4rem;
-        margin-bottom:1rem
+        margin-bottom:1rem;
     ">
         🎬
     </div>
@@ -940,7 +938,7 @@ else:
         font-size:1.5rem;
         font-weight:700;
         color:var(--text);
-        margin-bottom:0.5rem
+        margin-bottom:0.5rem;
     ">
         Ready to Analyse
     </div>
@@ -949,7 +947,7 @@ else:
         color:var(--text-muted);
         font-size:0.85rem;
         max-width:380px;
-        line-height:1.7
+        line-height:1.7;
     ">
         Upload your meeting audio or video in the sidebar,
         choose your language, and hit
@@ -961,7 +959,7 @@ else:
         display:flex;
         gap:1rem;
         flex-wrap:wrap;
-        justify-content:center
+        justify-content:center;
     ">
         <span class="badge badge-purple">
             Transcription
@@ -977,6 +975,4 @@ else:
     </div>
 
 </div>
-""",
-        unsafe_allow_html=True,
-    )
+""")
