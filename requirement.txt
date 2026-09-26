@@ -4,6 +4,7 @@
 
 # ---------- UI ----------
 streamlit>=1.38.0
+python-dotenv
 
 # ---------- Audio ingestion ----------
 yt-dlp>=2024.8.6
