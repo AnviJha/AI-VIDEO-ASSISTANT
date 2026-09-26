@@ -1,4 +1,4 @@
-```python
+
 # this file contain main with style
 
 import streamlit as st
@@ -980,5 +980,4 @@ else:
         """,
         unsafe_allow_html=True,
     )
-```
 
